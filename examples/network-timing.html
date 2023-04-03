@@ -56,6 +56,25 @@
         }).then((result) => {
             console.log("Time (image) from promise:", result);
         });
+
+        // Another way is by using iframes.
+
+        // With callback
+
+        XSL.frameTimed({
+            url: URL,
+            callback: function (time) {
+                console.log("Time (iframe):", time);
+            }
+        });
+
+        // Without callback (returns a promise)
+
+        XSL.frameTimed({
+            url: URL
+        }).then((result) => {
+            console.log("Time (iframe) from promise:", result);
+        });
     </script>
 </body>
 </html>

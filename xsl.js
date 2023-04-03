@@ -202,3 +202,60 @@ XSL._imageTimedPromise = function (options) {
         });
     });
 }
+
+/*
+    * XSL.frameTimed
+    * @description: Loads a page in an iframe and returns the time it took to load it.
+    * @param {Object} options
+    * @param {String} options.url
+    * @param {Function} options.callback
+    * @return {Promise}
+*/
+XSL.frameTimed = function (options) {
+    options = options || {};
+
+    if (!options.url) {
+        throw new Error('url is required');
+    }
+
+    if (!options.callback) {
+        return XSL._frameTimedPromise(options);
+    }
+
+    let start = performance.now();
+
+    let iframe = document.createElement('iframe');
+
+    iframe.onload = function () {
+        let end = performance.now();
+        if(iframe.parentNode) iframe.parentNode.removeChild(iframe);
+        options.callback(end - start);
+    };
+
+    iframe.onerror = function () {
+        let end = performance.now();
+        if(iframe.parentNode) iframe.parentNode.removeChild(iframe);
+        options.callback(end - start);
+    };
+
+    iframe.src = options.url;
+    document.body.appendChild(iframe);
+}
+
+/*
+    * XSL._frameTimedPromise
+    * @description: Promise wrapper for XSL.frameTimed
+    * @param {Object} options
+    * @param {String} options.url
+    * @return {Promise}
+*/
+XSL._frameTimedPromise = function (options) {
+    return new Promise(function (resolve, reject) {
+        XSL.frameTimed({
+            url: options.url,
+            callback: function (time) {
+                resolve(time);
+            }
+        });
+    });
+}
