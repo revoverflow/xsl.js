@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>xsl.js - Network Timing</title>
+    <script src="../xsl.js"></script>
+</head>
+<body>
+    <h1>xsl.js - Network Timing</h1>
+    <p>Use a timing based approach to exfiltrate data.</p>
+
+    <p>Results will be logged to the console.</p>
+
+    <script>
+        const URL = 'https://example.com';
+
+        // "time" is the time it took to load the URL in milliseconds.
+        // "data" is the data that the URL returned. (Returns error if the fetch failed)
+
+        // With callback
+
+        XSL.fetchTimed({
+            url: URL,
+            callback: function (time, data) {
+                console.log("Time (fetch):", time);
+                console.log("Data (fetch):", data);
+            }
+        });
+
+        // Without callback (returns a promise)
+
+        XSL.fetchTimed({
+            url: URL
+        }).then((result) => {
+            console.log("Time (fetch) from promise:", result.time);
+            console.log("Data (fetch) from promise:", result.data);
+        });
+
+        // You can also use img tags instead of fetch requests.
+
+        // With callback
+
+        XSL.imageTimed({
+            url: URL,
+            callback: function (time) {
+                console.log("Time (image):", time);
+            }
+        });
+
+        // Without callback (returns a promise)
+
+        XSL.imageTimed({
+            url: URL
+        }).then((result) => {
+            console.log("Time (image) from promise:", result);
+        });
+    </script>
+</body>
+</html>
