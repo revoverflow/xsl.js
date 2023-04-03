@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>xsl.js - Error based</title>
+    <script src="../xsl.js"></script>
+</head>
+<body>
+    <h1>xsl.js - Error based</h1>
+    <p>Probe an error based on a URL.</p>
+
+    <p>Results will be logged to the console.</p>
+
+    <script>
+        const URL = 'https://example.com';
+
+        // "result" is a boolean value that indicates if the url has successfully loaded or not.
+        // true = no error
+        // false = error
+
+        // With callback
+
+        XSL.probeError({
+            url: URL,
+            callback: function (result) {
+                console.log("Result from callback:", result);
+            }
+        });
+        
+        // Without callback (returns a promise)
+
+        XSL.probeError({
+            url: URL
+        }).then(result => {
+            console.log("Result from promise:", result);
+        });
+
+        // You can also specify a timeout (in milliseconds) for the request and what should be returned if the request times out.
+        // The default timeout is 5000 milliseconds and the default value for timeoutShouldReturn is an Error.
+
+        XSL.probeError({
+            url: URL,
+            timeout: 100,
+            timeoutShouldReturn: "seems like it timed out"
+        }).then(result => {
+            console.log("Result from promise with timeout:", result);
+        });
+    </script>
+</body>
+</html>
